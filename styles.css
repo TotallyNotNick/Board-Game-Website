@@ -1,0 +1,118 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0 2rem;
+    background: #f8f5f0;
+    color: #333;
+    line-height: 1.6;
+}
+
+.background {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0 2rem;
+    background: #f8f5f0;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #f2d7a0;
+    padding: 2rem 0;
+    text-align: center;
+    border-bottom: 5px solid #d1a144;
+    border-right: 5px solid #d1a144;
+    border-left: 5px solid #d1a144;
+}
+
+h1,
+h2,
+h3 {
+    color: #5c3b1e;
+}
+
+main {
+    max-width: 800px;
+    margin: auto;
+    padding-bottom: 4rem;
+}
+
+
+
+a {
+    color: #ae641d;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#rulebook-icon {
+    position: sticky;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 10;
+  }
+  
+  #rulebook-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+  }
+  
+  .rulebook-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    text-align: center;
+  }
+  
+  .rulebook-content ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .rulebook-content li {
+    margin: 0.5rem 0;
+  }
+  
+  .rulebook-content a {
+    text-decoration: none;
+    color: #735d78;
+    font-weight: bold;
+  }
+  
+  .hidden {
+    display: none;
+  }
+
+
+
+* {
+    box-sizing: border-box
+}
+
+/* Slideshow container */
+.slideshow-container {
+    max-width: 1000px;
+    position: relative;
+    margin: auto;
+}
+
+/* Hide the images by default */
+.mySlides {
+    display: none;
+}

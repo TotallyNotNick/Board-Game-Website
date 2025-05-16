@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Board Game Quiz</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="quiz-container" id="quiz-container">
+    <div id="quiz"></div>
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    let current = 0;
+    let answers = [];
+    const quizContainer = document.getElementById("quiz-container")
+    const games = {
+      'Catan': { img: "images/Catan.png", desc: 'Catan is a classic game of trading, building, and settling. Great for families and friends who like negotiation and strategy.', link: 'https://www.amazon.com/CATAN-Board-Game-Discovery-Civilization/dp/B00U26V4VQ/ref=sr_1_2?crid=OEVD680GOZOS&dib=eyJ2IjoiMSJ9.aDf4BYLqvDvSvqXG8jy4IRH-VUqmZdCNxgwJqmvuGyk4gvDiQiWJQeMp3pewsaHr2BjESVK810O_2wZf4boB0uBo4g7k1ZCVvcHMcMk1n7ni0MWbS_rDSNLfZe7UbA_KCnJnnHukxWeATpbd1gWYUhu-1YuFeubrJTn8fm2jADxwX25F2K4yZfIh7Y7nSc_9FuvnnVruG_OOL27TZ87kRnddZzu9ukU9Qp2yJi_-bmHL3jygGJLssXQHESzerI8W4ZeowTFZcpESuuIUuMZTNp57JFLHP7bGhAoSvmn02Ko.mEcyExlWQSDUTeASDlH_HWmT-heLbVDMgTd2z37U-AA&dib_tag=se&keywords=catan&qid=1747411428&sprefix=cata%252Caps%252C136&sr=8-2' },
+      'Carcassonne': { img: 'images/Carcassonne.png', desc: 'A relaxing tile-placement game where you build a medieval landscape. Simple rules with lots of strategy.', link: 'https://www.amazon.com/Z-Man-Games-ZM7810-Carcassonne/dp/B00NX627HW/ref=sr_1_2?crid=3JD548Y8F6G67&dib=eyJ2IjoiMSJ9.XGfjetMhy1UEau-3qKvb8tG1rp5BFcO6dZknwMlUxoUxwN_zQuE5xCX9alJLzlgpdlrUaPo36g2HXp3QxdQY6FLiHhTS59cJWHAYVkZP_6g2vyr-oSRnY3P9h9fOP7A_KM9hBhkEpEkbtTeHQj1u4T3J4YYEEMQndQaM2EkCAgTRubr7XCo2xKBZpp6HlQBhwZZrXeko6cUNetKzoozukZ7DYCohKiVct0s5lhWKcBFtCFn0Qxxz6ZfJjix6wKMMXvN0O97nQ7z0_lSULm2_EQZCIkDVz40pxple_Vq1gWM.WBN03UOai6NEesG7UXNGQ9FrFJWCxONxvdOwhFWXc_s&dib_tag=se&keywords=carcassonne&qid=1747411465&sprefix=carca%252Caps%252C168&sr=8-2' },
+      'Dominion': { img: 'images/Dominion.png', desc: 'A deck-building game where you create your own kingdom strategy. Great for thinkers who like card games.', link: 'https://www.amazon.com/Rio-Grande-Games-Dominion-2nd/dp/B01LYLIS2U/ref=sr_1_5?crid=2T2E37P3IRFCB&dib=eyJ2IjoiMSJ9.tdY-ZFBSvAngJPtWIpwjpFaRtDrwROogyW79QQpMnpadFv1BsctJm__LUKukF8tTwPRlrUblaFXCh3MTP-z2RmYB9p8PwixyFiODp0iYqKtZqAL_j6riLgDao98Hd_9t_h43drTg90cA1K3B_RfmBH7otPtVQBar_UWIaZ9uF19Mg7d4KAdPjMv0dzzceE43YsRJLgX1Tjkv4FF2B072-DVzjWUpOdm_dsqWMiNeobA.IKCw9D_lBo6kDLwhhfY9m0a9ZzEzQRm7dZR_Uv4CMew&dib_tag=se&keywords=dominion&qid=1747411488&sprefix=dominio%2Caps%2C158&sr=8-5' },
+      'Sushi Go': { img: 'images/Sushi Go.png', desc: 'Fast, fun, and adorable! Sushi Go is a great introduction to drafting and quick decision-making.', link: 'https://www.amazon.com/Sushi-Go-Pick-Pass-Card/dp/B00J57VU44/ref=sr_1_1?crid=Q0SXPL7EJ9HA&dib=eyJ2IjoiMSJ9.RNCSkLDSHaWC4kamyqnRPyPG_jVHWxNthnQQCafAcH6uXdLJwyiXmTU_S8gD_YHjqfALYoJ5bd2Ugwzx6oOjZLUIOfMOal9i8PpJfLDdivguA0IP_iQ3T_H_6ncgbAxGm-Xoe2WHcRJin6RpmS01Qf0h1J7ClU4Z1l3WtHAnTT6WrrYAj6Tiax7W8iNixyvCES2h2VAfUJcB9_akr6p1tUe51EEJG1ePQkctBbAGgAFtoT3L_0mGuebVz9NXxQ2m27J_NlXL3OHPFFyzmEEfTEI1kGwFuBvchhSSPaO9ssM.W39BQlD-yTyPn4oZkrJxeJtUC0B_eVPyHi3z_pATuXI&dib_tag=se&keywords=sushi+go&qid=1747411509&sprefix=sushi+g%2Caps%2C164&sr=8-1' },
+      'Codenames': { img: 'images/Codenames.png', desc: 'A social word game that&apos;s perfect for parties. Play in teams and use clever clues to win.', link: 'https://www.amazon.com/Czech-Games-00031CGE-Codenames/dp/B014Q1XX9S/ref=sr_1_1?crid=22ED636RKVZYC&dib=eyJ2IjoiMSJ9.O87VpX4Vj6XKgffj00gTTb2V81lIbbghsya-RQyky4OxDz4DNj1C-UJnubYKLMLP5XytGGX_ugGTCg6raKtkkkqwEaKCXt9-gswuDrvqFfmrQDCShnJ-lHf36LJRtBATitmC2u4BQYX1d0effG6RKNYSaztPaMPXt1RpbameakW2F1KRGICRlfw_2ddQJPmNrRmfSQJgx7Azh0f1rOR2DbGEcCYiN10H5MzHxzaW5DOZ0F9UeBxKPhfoBkbecfXBc5htNQLESyp2nXVFQrrF3Ccm7ar20y6oKKOmc8ochcI.0iHUlKD1LooFJPTRZdcMseoZxuXE585fdIelyexVrSw&dib_tag=se&keywords=codenames&qid=1747411533&sprefix=codename%2Caps%2C166&sr=8-1' },
+      'Ticket to Ride': { img: 'images/Ticket_to_Ride.png', desc: 'Build train routes across the country in this accessible, strategic classic.', link: 'https://www.amazon.com/Days-Wonder-DO7201-Ticket-Ride/dp/0975277324/ref=sr_1_6?crid=3IYPJLZX9FRBC&dib=eyJ2IjoiMSJ9.yVMrRuqQ9E2B99Ns5MhqFnUAJiIdYx23AsC36Q-US7VxmAlU-hRfVuwGIcUx0IjDCsiG5bCbXEu9PkLb6LDZSWQ27hMpbXP-VBl3QMW3unq4KdWapE3icLB1r7oPdLyDgg4CyDGxPBxwqKX_KrzQj4M7cDZrRKlCdwPu3nZuOxAefDY15nz1MDj6k4mnkHAQoTud35wdVs6lKbFZ0X5CvmiDUGokTXdbB_HejOOIdqm9hEpwRvKyCjch4rPqRpwzh5u2gpVoyGijo3HyR0YL6hCVMT3GjuSZbN7ok33Cuc8.Dp-IfoIg4wjbw0b9w-yGpXy3hXnUpHE9GzwWRojnpZY&dib_tag=se&keywords=ticket+to+ride&qid=1747411552&sprefix=ticket+to+ri%2Caps%2C188&sr=8-6' },
+      'Azul': { img: 'images/Azul.png', desc: 'A beautiful game of tile-drafting and pattern-building. Great for calm, strategic players.', link: 'https://www.amazon.com/Board-Game-Mosaic-Tile-Placement-Next-Move/dp/B077MZ2MPW/ref=sr_1_1?crid=2FROTWBSUGWRO&dib=eyJ2IjoiMSJ9.5rsMfjIc3jo6TM2iuUbmarFvPsE-pRKPZSZdkD9kkrv-Xc1dz6Myed1_fqngByqjdC-oRSuhYclvLItbwURPx56LTRUqEQEAg0TZxDVK0nwVkJWTyZtOFo6bdEVfqfAGKunJOpxMVaBR3WVcvCzfKY73bd3dIlY4ZfNrSX15ypVVRNFHmxvAaCG819-t2f1c2SmWI7Wl5BcU1ABpks8pL3N0EcJS0ChGxMdZntvCeXjzoW4GDFp3qMj4S8DL4roqjLg9eQoh98D65tMGGDAKW-3o6eOoelVzX8M12HLF4Mg.-tuLXkWpOMetJtibtowUH8eZ7_K9qGREtNoM5sq_9rk&dib_tag=se&keywords=azul&qid=1747411575&sprefix=azul%2Caps%2C162&sr=8-1' },
+      'Pandemic': { img: 'images/Pandemic.webp', desc: 'A cooperative game where players work together to stop global outbreaks. Great for team lovers.', link: 'https://www.amazon.com/Z-Man-Games-ZM7101-Pandemic/dp/B00A2HD40E/ref=sr_1_1?crid=2S2H78D18FBEK&dib=eyJ2IjoiMSJ9.HVgEoSR0xzsrjA7c2y7AZrS4XbHrHe2uGIa_rHB9_3TWWadp3hJJ4GiDFEMyyDaxJmjgC_bJU0SEsRhTXSkt_YNL2V--DN1BsuW23n0kszevXQ4PjUzNqLNClaShqFfYjRTNrkl8UIAEJCcSSQLW8060h-E4yV-iZ0cspF8yz_SqXbxs7BpNHX12SBHkMWIN2DEM2xf85hLQiFX-S8fc4hTzImFDjXxgmaoXqOZdqfLnfxKmHJSb9z2uCpZB9Sg-Jxr7ma5P-2IeoMues3pmhnSdQpqChfaYC2IX5JKColA.vxANZHW_NgPFN9pmkVeVMakbeL-gNGT74wVUeGbojao&dib_tag=se&keywords=pandemic&qid=1747411606&sprefix=pandemi%2Caps%2C165&sr=8-1' },
+      '7 Wonders': { img: 'images/7_Wonders.png', desc: 'Build civilizations across the ages. Great for medium-sized groups who like smart choices.', link: 'https://www.amazon.com/Board-Games-SV01EN-7-Wonders/dp/B08F65MX4L/ref=sr_1_5?crid=12T4TYOZ29E3D&dib=eyJ2IjoiMSJ9.o0AyabfovEaMYlcKxGjU1KW_cdZQO88d4l5WPro-txSJl5B_kRueGEfclKaDtm6vk-rJFGlkUxYOwaW1m5URNWm1-eV_K2kKlYgP0fpXL_B6aaWa8tObZ6tSQL6W0Byd0w6OA6i3Jv4q1yvG4qmV3Ih4N6CiNH1u9Z1LqpRwqLEd4IlRrLtX7k-Aa9F9MBc5byxz0DS8R57c3HidSo7fMtJB8QJ1Baq4iRj3dZYYksUQURtOe932nuarMgRO5pheir0qzG0mTSObRgqNyYzd57nyMsf2G4tOWUQ6Fm6Nh7s.-UoiIh4-V0Qa__w-LfY-MF3jHHajAEms7_JGHPdF4iQ&dib_tag=se&keywords=7+wonders&qid=1747411623&sprefix=7+wonder%2Caps%2C162&sr=8-5&ufe=app_do%3Aamzn1.fos.9fe8cbfa-bf43-43d1-a707-3f4e65a4b666' },
+      'King of Tokyo': { img: 'images/King_of_Tokyo.png', desc: 'Monsters, dice, and chaos! Great for families and casual gamers looking for fast fun.', link: 'https://www.amazon.com/IELLO-King-Tokyo-Board-Game/dp/B01F46RPS4/ref=sr_1_1?crid=3MLVBXIW7DDS0&dib=eyJ2IjoiMSJ9.Yo2wk0EoGARbzWDzlRNIba8lT8gwiFFDQ6KHHlVsPfhJ7bbqX3UF4GVZ8v5AhUQigwKId4zDzvzRzLXyWd1RMzFL4fGfLiZDtwuZ-c1fbtP0oJz5uz-wsIStPV5A10ZBYK5dp1YpD64EKUQWfAdr_a_-pu5uQaG4KB1Yofi9BWiiN8_2pZr_u9utrhUWtoTQBZ2CLNIDyW49vIcZCJ8aOShCxvQagjYG5eSTcq6Bj9uc_bVi-6ujJB-mZ2YiZatPQNI-k7ZwJuReQZw3bTXbr1EGvIvEtU2mlg82IQZKCQw.kbezBq3Sw07f6dmX67jrEXRb4kKtkaDhN88702rfnZA&dib_tag=se&keywords=king%2Bof%2Btokyo&qid=1747411640&sprefix=king%2Bof%2Btokyo%2Caps%2C177&sr=8-1&th=1' },
+      'Dixit': { img: '/images/Dixit.png', desc: 'A creative and whimsical game of storytelling and art interpretation. Perfect for creative minds.', link: 'https://www.amazon.com/Dixit-Board-Game-Award-Winning-Storytelling/dp/B09BSP7B7V/ref=sr_1_1?crid=2U1FUGHSW9ZXC&dib=eyJ2IjoiMSJ9.K8rcqKpQr0AD6I0XJQqf7bpLp9318XVqJ9Hmr1a2xIVBnU_Ce0jju4qjwPpHQNj2SHbDCMr0N4LkQ7vTwqXV8Oay8RcVI0vrKsMJsAVHBhw_9jTTlreMn4ioNtj-ps7T_OQsIeyaUK_OFnJSzNEs8EaZ2RZFfhmY3_djJfzOirP6hPRSCMOLIc7sEZxu_OA3ztLAMxmF4ZXHJvJQlK-pXg8gutMg9qF1ZIphQeUFQozwhxKrv5rqCAZ09ViMhClkIf9gZL0EmUtta37QNUlyRoLCl-fyo3yyVxKbN9cOplk.RC4GTp8EAG1lnOEQ0EAizhSQwyiL4yWXSGnEdYVe0ms&dib_tag=se&keywords=dixit&qid=1747411659&sprefix=dixi%2Caps%2C161&sr=8-1' },
+      'Love Letter': { img: 'images/Love_Letter.png', desc: 'Quick and clever deduction in a tiny package. Ideal for couples and short sessions.', link: 'https://www.amazon.com/Love-Letter-Card-Game-Renaissance/dp/B07PHHBWM9/ref=sr_1_4?crid=3VMHKGT7YHZG0&dib=eyJ2IjoiMSJ9.vJqWSmPOlPcKICe9dd7UXxKARo1mW8A5BTF-1_C8RWEhBpcSDrnjLQjVxeYEmaFzpVBCM50U8xLRtyDYzh1q_iWBUUYB0hrFMZ-lnjXwKf2WpURSCYUE6yhSbR8n3dTeD0siyA1f-gELeVuIpZGA9eSON62lwI6699sse5QCqV-hgWVJJp8NRSciIBB8fkY1jTxozV47eQrCtI0m6YjIFHAjUIv85jEnpJUYhUzg_AlJlKWpOIR3u--azf7cK_1c1aouTjj_rEx7mMmyEhRfNjOsm17r5lMR-3TweM_LKDw.poelyroheFhxT-P3AI5ugETav3eosX7Pz8_iTDxwY5E&dib_tag=se&keywords=love+letter&qid=1747411676&sprefix=love+lett%2Caps%2C183&sr=8-4' }
+    };
+
+    const questions = [
+      { question: 'How many players will usually be playing?', image: 'images/King_of_Tokyo.png', options: ['2', '3-4', '5-6', 'Large groups'] },
+      { question: 'Do you prefer teamwork or competition?', image: 'images/Pandemic.webp', options: ['Cooperation', 'Competition', 'Both', 'Depends on mood'] },
+      { question: 'How much strategy do you enjoy?', image: 'images/Azul.png', options: ['Light and fun', 'Moderate', 'Heavy strategy', 'Creative freedom'] },
+      { question: 'What appeals most to you in a game?', image: 'images/Dixit.png', options: ['Storytelling', 'Puzzle-solving', 'Player interaction', 'Visuals/components'] },
+      { question: 'How long do you like your games to be?', image: 'images/7_Wonders.png', options: ['< 30 min', '30-60 min', '1-2 hours', '2+ hours'] },
+      { question: 'Do you prefer luck or skill-based games?', image: 'images/Catan.png', options: ['Mostly luck', 'Mostly skill', 'Balanced', 'Don’t care'] },
+      { question: 'Which theme excites you most?', image: 'images/Ticket_to_Ride.png', options: ['Fantasy', 'Real-world', 'Sci-fi', 'Abstract'] },
+      { question: 'How much reading/learning are you okay with?', image: 'images/Love_Letter.png', options: ['Minimal', 'Some', 'Happy to learn', 'Love complex rules'] },
+      { question: 'Do you want to be social or focused?', image: 'images/Sushi Go.png', options: ['Social/fun', 'Focused/quiet', 'Both', 'Depends on people'] },
+      { question: 'What’s more important to you?', image: 'images/Carcassonne.png', options: ['Winning', 'Laughing', 'Challenging myself', 'Creating stories'] }
+    ];
+
+    function showQuestion() {
+      const q = questions[current];
+      document.getElementById('quiz').innerHTML = `
+        <div class="question">
+          <h2>${q.question}</h2>
+          <img src="${q.image}" alt="Question Image" class="quiz-image">
+          <div class="options">
+            ${q.options.map((opt, i) => `<button onclick="selectAnswer(${i})">${opt}</button>`).join('')}
+          </div>
+        </div>`;
+    }
+
+    function selectAnswer(choice) {
+      quizContainer.classList.remove("fade-question");
+      void quizContainer.offsetWidth;
+      quizContainer.classList.add("fade-question");
+      answers.push(choice);
+      current++;
+      if (current < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      const score = answers.reduce((a, b) => a + b, 0);
+      const index = score % Object.keys(games).length;
+      const gameKey = Object.keys(games)[index];
+      const game = games[gameKey];
+      document.getElementById('quiz').innerHTML = '';
+      document.getElementById('result').innerHTML = `
+                <h2>We recommend: ${gameKey}</h2>
+                <img src="${game.img}" alt="${gameKey}">
+                <p>${game.desc}</p>
+                <p><a href="${game.link}" target="_blank">Buy on Amazon</a></p>`;
+      quizContainer.classList.add("flipped");
+    }
+
+    showQuestion();
+
+
+  </script>
+  <img src="images/rulebook.png" id="rulebook-icon" onclick="toggleRulebook()">
+  <div id="rulebook-overlay">
+    <div class="rulebook-content">
+      <h2>Rulebook</h2>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quiz.html">Board Game Quiz</a></li>
+      </ul>
+      <button id="close-rulebook">Close</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
